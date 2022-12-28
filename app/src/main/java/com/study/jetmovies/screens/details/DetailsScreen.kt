@@ -14,7 +14,10 @@ import androidx.navigation.NavController
 @Composable
 fun DetailsScreen(navController: NavController, movie: String?) {
     Scaffold(topBar = {
-        TopAppBar(backgroundColor = Color.Magenta, elevation = 5.dp) {
+        TopAppBar(
+            backgroundColor = Color.LightGray,
+            elevation = 5.dp
+        ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                IconButton(onClick = { navController.popBackStack() }) {
                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go back")
@@ -29,12 +32,6 @@ fun DetailsScreen(navController: NavController, movie: String?) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center) {
                 Text(text = movie.toString(), style = MaterialTheme.typography.h4)
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = {
-                    navController.popBackStack()
-                }) {
-                    Text(text = "Back")
-                }
             }
         }
     }
