@@ -17,7 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.study.jetmovies.model.Movie
+import com.study.jetmovies.model.getMovies
 import com.study.jetmovies.navigation.MovieScreens
+import com.study.jetmovies.widgets.MovieRow
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -34,7 +37,7 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun MainContent(navController: NavController, movieList: List<String> = listOf("Indiana Jones", "Top Gun", "Avatar", "Power Rangers", "Run", "Get out")) {
+fun MainContent(navController: NavController, movieList: List<Movie> = getMovies()) {
     Column(modifier = Modifier.padding(12.dp)) {
         LazyColumn(content = {
             items(items = movieList) { movie ->
@@ -46,32 +49,3 @@ fun MainContent(navController: NavController, movieList: List<String> = listOf("
     }
 }
 
-@Composable
-fun MovieRow(movie: String, onClick: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-            .height(130.dp)
-            .clickable { onClick.invoke(movie) },
-        shape = RoundedCornerShape(corner = CornerSize(15.dp)),
-        elevation = 5.dp
-
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Surface(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(100.dp),
-                shape = RectangleShape,
-                elevation = 5.dp
-            ) {
-                Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Movie Icon")
-            }
-            Text(text = movie)
-        }
-    }
-}
