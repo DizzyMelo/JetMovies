@@ -13,10 +13,7 @@ data class Movie(
     val rating: String
 )
 
-fun getMovie(id: String?): Movie? {
-    if (id == null) {
-        return null
-    }
+fun getMovie(id: String? = ""): Movie? {
     return getMovies().find { movie -> movie.id == id }
 }
 

@@ -5,6 +5,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -31,9 +33,9 @@ import com.study.jetmovies.model.getMovies
 @OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
-fun MovieRow(movie: Movie = getMovies().first(), onClick: (String) -> Unit = {}) {
+fun MovieRow(movie: Movie = getMovies().first(), isExpanded: Boolean = false, onClick: (String) -> Unit = {}) {
     var expanded by remember {
-        mutableStateOf(false)
+        mutableStateOf(isExpanded)
     }
 
     Card(
@@ -56,15 +58,7 @@ fun MovieRow(movie: Movie = getMovies().first(), onClick: (String) -> Unit = {})
                 shape = RectangleShape,
                 elevation = 5.dp
             ) {
-                Image(
-                    painter = rememberImagePainter(
-                        data = movie.images.first(),
-                        builder = {
-                            crossfade(true)
-                            transformations(CircleCropTransformation())
-                        }),
-                    contentDescription = "Movie poster"
-                )
+                MovieImage(imgUrl = movie.images.first())
             }
             Column(modifier = Modifier.padding(4.dp)) {
                 Text(text = movie.title, style = MaterialTheme.typography.h6)
@@ -102,4 +96,42 @@ fun MovieRow(movie: Movie = getMovies().first(), onClick: (String) -> Unit = {})
         }
 
     }
+}
+
+@Composable
+fun MovieImage(imgUrl: String) {
+    Image(
+        painter = rememberImagePainter(
+            data = imgUrl,
+            builder = {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }),
+        contentDescription = "Movie poster"
+    )
+}
+
+@Composable
+fun HorizontalScrollableImageView(movie: Movie) {
+    LazyRow(content = {
+        items(items = movie.images) { imgUrl ->
+            Card(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .size(240.dp),
+                elevation = 5.dp
+            ) {
+                Image(
+                    painter = rememberImagePainter(
+                        data = imgUrl,
+                        builder = {
+                            crossfade(true)
+                            transformations(CircleCropTransformation())
+                        }),
+                    contentDescription = "Movie poster"
+                )
+
+            }
+        }
+    })
 }
